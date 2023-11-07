@@ -22,7 +22,7 @@ auto_envsubst_config() {
     subdir=$(dirname "$relative_path")
     # create a subdirectory where the template file exists
     mkdir -p "$output_dir/$subdir"
-    echo >&3 "$ME: Running envsubst on $template to $output_path"
+    echo "Running envsubst on $template to $output_path"
     envsubst "$defined_envs" < "$template" > "$output_path"
   done
 }
