@@ -1,0 +1,30 @@
+name: Update description
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'main'
+    paths:
+      - README.md
+
+jobs:
+  update-description:
+    runs-on: ubuntu-latest
+    steps:
+    - 
+      name: Login to DockerHub
+      uses: docker/login-action@v3
+      with:
+        username: ${{vars.DOCKERHUB_USERNAME}}
+        password: ${{secrets.DOCKERHUB_TOKEN}}
+    - 
+      name: Checkout
+      uses: actions/checkout@v2
+    - 
+      name: Update docker description
+      uses: peter-evans/dockerhub-description@v2
+      with:
+        username: ${{vars.DOCKERHUB_USERNAME}}
+        password: ${{secrets.DOCKERHUB_TOKEN}}
+        repository: ${{vars.DOCKERHUB_USERNAME}}/nginx
