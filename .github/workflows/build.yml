@@ -1,0 +1,39 @@
+name: Build images
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - 'main'
+    paths:
+      - 'dockerfile'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      -
+        name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: all
+      -
+        name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+      -
+        name: Login to DockerHub
+        uses: docker/login-action@v3
+        with:
+          username: ${{vars.DOCKERHUB_USERNAME}}
+          password: ${{secrets.DOCKERHUB_TOKEN}}
+      - 
+        name: Checkout
+        uses: actions/checkout@v4
+      -
+        name: Build Image
+        uses: docker/build-push-action@v6
+        with:
+          push: true
+          file: Dockerfile
+          platforms: linux/amd64,linux/arm64,linux/ppc64le
+          tags: ${{vars.DOCKERHUB_USERNAME}}/nginx
