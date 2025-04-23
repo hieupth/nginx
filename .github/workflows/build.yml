@@ -7,6 +7,7 @@ on:
       - 'main'
     paths:
       - 'dockerfile'
+      - '*.conf'
 
 jobs:
   build:
@@ -34,6 +35,6 @@ jobs:
         uses: docker/build-push-action@v6
         with:
           push: true
-          file: Dockerfile
+          file: dockerfile
           platforms: linux/amd64,linux/arm64,linux/ppc64le
           tags: ${{vars.DOCKERHUB_USERNAME}}/nginx
